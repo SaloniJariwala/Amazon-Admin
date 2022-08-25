@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { ReactElement, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Routepaths } from "../../Route/RoutePaths";
 import { ContentWrapper, FormWrapper, TitleWrapper } from "./style";
 import { CaretDownOutlined, CloseOutlined } from "@ant-design/icons";
-import { Col, Divider, Popover } from "antd";
+import { Divider, Popover } from "antd";
 
-const Form: React.FC = () => {
+const SignInForm: React.FC = () => {
 
     const navigate = useNavigate();
     const [visible, setVisible] = useState<boolean>(false);
@@ -26,7 +26,7 @@ const Form: React.FC = () => {
         navigate(Routepaths.signup);
     }
 
-    const content = (
+    const content: ReactElement = (
         <ContentWrapper>
             <p>
                 Choosing "Keep me signed in" reduces the number of times you're asked to Sign-In on this device.
@@ -37,7 +37,7 @@ const Form: React.FC = () => {
         </ContentWrapper>
     );
 
-    const title = (
+    const title: ReactElement = (
         <TitleWrapper>
             <span>"Keep In Signed In" Checkbox</span>
             <CloseOutlined onClick={hide} style={{ cursor: "pointer" }} />
@@ -140,4 +140,4 @@ const Form: React.FC = () => {
     );
 };
 
-export default Form;
+export default SignInForm;

@@ -1,23 +1,27 @@
-import { SigninWrapper } from "./style";
+import { SignupWrapper } from "./style";
 import HeaderImg from "../../Assets/Images/SigninHeader.png";
 import { Divider } from "antd";
-import SignInForm from "./SignInForm";
+import { useForm } from "react-hook-form";
+import SignUpForm from "./SignUpForm";
 
-const SignIn: React.FC = () => {
+const SignUp: React.FC = () => {
+
+    const { control } = useForm();
+
     return (
-        <SigninWrapper>
+        <SignupWrapper>
             <img
                 src={HeaderImg}
                 alt="logo"
                 className="logo"
             />
-            <SignInForm />
             <Divider />
+            <SignUpForm control={control} />
             <div className="copyright-info">
                 <p>&copy; 1996-2022, Amazon.com, Inc. or its affiliates</p>
             </div>
-        </SigninWrapper>
+        </SignupWrapper>
     );
 };
 
-export default SignIn;
+export default SignUp;
