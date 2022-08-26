@@ -1,3 +1,4 @@
+import { Button } from "antd";
 import styled from "styled-components";
 
 export const SignupWrapper = styled.div`
@@ -26,4 +27,31 @@ export const FormWrapper = styled.div`
         font-size: 28px;
         line-height: 1.2;
     }
+    .ant-btn {
+        &:active, &:focus, &:hover {
+            color: black;
+            border-color: #a88734 #9c7e31 #846a29;
+            background: linear-gradient(to bottom,#f7dfa5,#f0c14b);
+        }
+    }
+    .sign-in {
+        display: flex;
+        height: 22px;
+        margin-top: 25px;
+    }
+`;
+
+export const AntButton = styled(Button)`
+    width: 100%;
+    box-shadow: 0 1px 0 rgb(255 255 255 / 40%) inset;
+    background: linear-gradient(to bottom,#f7dfa5,#f0c14b);
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+    height: 29px;
+    border-radius: 3px;
+    vertical-align: middle;
+    border-color: #a88734 #9c7e31 #846a29;
+    border: 1px solid;
+    margin-bottom: 8px;
 `;

@@ -1,7 +1,7 @@
 export const Routepaths = {
     home: '/',
-    dashboard: '/dashboard',
-    signin: '/sign-in',
-    signup: '/sign-up',
-    forgotPassword: '/forgot-password',
+    dashboard: '/seller/dashboard',
+    signin: '/seller/sign-in',
+    signup: '/seller/sign-up',
+    forgotPassword: '/seller/forgot-password',
 };
