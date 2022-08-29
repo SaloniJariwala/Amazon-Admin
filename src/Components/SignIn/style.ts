@@ -29,7 +29,7 @@ export const FormWrapper = styled.div`
     padding: 20px 26px;
     width: 26%;
     h1 {
-        font-weight: 500;
+        font-weight: 470;
         font-size: 28px;
         line-height: 1.2;
     }
