@@ -4,7 +4,6 @@ import { IPhoneNoContainerProps } from "../../../Types/SignUp";
 import { ContainerWrapper } from "./style";
 import { ExclamationOutlined } from "@ant-design/icons";
 import { Controller } from "react-hook-form";
-import { on } from "stream";
 import { ErrorMessage } from "../../Common/ErrorMessage";
 
 const PhoneNoContainer: React.FC<IPhoneNoContainerProps> = ({
@@ -33,9 +32,14 @@ const PhoneNoContainer: React.FC<IPhoneNoContainerProps> = ({
                                 onChange={onChange}
                                 onBlur={onBlur}
                                 value={value}
-                                defaultValue="India +91"
+                                defaultValue={'select'}
                                 loading={isLoading}
                             >
+                                <Option key="select" value="select" disable>
+                                    <div className="option">
+                                        Select Country
+                                    </div>
+                                </Option>
                                 {countryData?.map((item) => (
                                     <Option key={item._id} value={item._id} >
                                         <div className="option">
@@ -50,7 +54,17 @@ const PhoneNoContainer: React.FC<IPhoneNoContainerProps> = ({
                         <Controller
                             control={control}
                             name="phoneNo"
-                            rules={{ required: 'Enter your Mobile number' }}
+                            rules={{
+                                required: 'Enter your Mobile number',
+                                maxLength: {
+                                    value: 10,
+                                    message: 'Enter valid number'
+                                },
+                                minLength: {
+                                    value: 10,
+                                    message: 'Enter valid number'
+                                }
+                            }}
                             render={({ field: { onChange, onBlur, value } }) => (
                                 <Input
                                     placeholder="Mobile number"

@@ -2,7 +2,7 @@ import { Divider, message } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { COUNTRY_API } from "../../../Constants/SignUp";
+import { COUNTRY_API, USER_POST_API } from "../../../Constants/SignUp";
 import { ICountry, IFormValues } from "../../../Types/SignUp";
 import { AntButton, FormWrapper } from "../style";
 import EmailContainer from "./EmailContainer";
@@ -10,12 +10,15 @@ import NameContainer from "./NameContainer";
 import PasswordContainer from "./PasswordContainer";
 import PhoneNoContainer from "./PhoneNoContainer";
 import { CaretRightOutlined } from "@ant-design/icons";
+import { Routepaths } from "../../../Route/RoutePaths";
+import { useNavigate } from "react-router-dom";
 
 const SignUpForm: React.FC = () => {
 
     const methods = useForm<IFormValues>();
 
-    const { handleSubmit } = methods;
+    const { handleSubmit, resetField } = methods;
+    const navigate = useNavigate();
     const [isLoadingCountries, setIsLoadingCountries] = useState<boolean>(false);
     const [countryData, setCountryData] = useState<ICountry[]>([]);
 
@@ -29,12 +32,38 @@ const SignUpForm: React.FC = () => {
                 message.error(error);
             })
             .finally(() => {
-                setIsLoadingCountries(false)
+                setIsLoadingCountries(false);
             });
     }, []);
 
-    const onSubmit = (formData: IFormValues) => {
-        console.log(window.location.pathname);
+    const handleReset = () => {
+        resetField("fullname");
+        resetField("countryId");
+        resetField("phoneNo");
+        resetField("email");
+        resetField("password");
+    }
+
+    const onSubmit = async (formData: IFormValues) => {
+        let userType: string;
+        if (window.location.pathname.includes('seller')) {
+            userType = 'seller';
+        } else {
+            userType = 'customer';
+        }
+        const payload = { ...formData, userType, phoneNo: Number(formData.phoneNo) };
+        debugger
+        await axios.post(USER_POST_API, payload)
+            .then((response) => {
+                debugger
+                message.success("User Added Successfully");
+                handleReset();
+            })
+            .catch((error) => {
+                debugger
+                // console.log("Errorrr...", error);
+                message.error(error.response.data);
+            });
     }
 
     return (
@@ -61,7 +90,7 @@ const SignUpForm: React.FC = () => {
                     <Divider />
                     <div className="sign-in">
                         <p>Already have an account?</p>&nbsp;
-                        <a href="">Sign-In <CaretRightOutlined /></a>
+                        <a href="" onClick={() => navigate(Routepaths.signin)}>Sign-In <CaretRightOutlined /></a>
                     </div>
                 </form>
             </FormProvider>
