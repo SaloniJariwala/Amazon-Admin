@@ -1,14 +1,22 @@
-import React, { ReactElement, useState } from "react";
+import React, { ChangeEvent, ReactElement, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Routepaths } from "../../Route/RoutePaths";
 import { ContentWrapper, FormWrapper, TitleWrapper } from "./style";
 import { CaretDownOutlined, CloseOutlined } from "@ant-design/icons";
-import { Divider, Popover } from "antd";
+import { Divider, message, Popover } from "antd";
+import { ISignInCred } from "../../Types/SignIn";
+import axios from "axios";
+import { USER_SIGN_IN_API } from "../../Constants/ApiEndpoints";
 
 const SignInForm: React.FC = () => {
 
     const navigate = useNavigate();
     const [visible, setVisible] = useState<boolean>(false);
+    const [error, setError] = useState<Object>(false);
+    const [formValues, setFormValues] = useState<ISignInCred>({
+        emailOrPhone: '',
+        password: ''
+    });
 
     const onForgotPassword = (): void => {
         navigate(Routepaths.forgotPassword);
@@ -24,6 +32,10 @@ const SignInForm: React.FC = () => {
 
     const handleCreateAccount = () => {
         navigate(Routepaths.signup);
+    }
+
+    const handleChange = (event: ChangeEvent<HTMLInputElement>, name: string) => {
+        setFormValues({ ...formValues, [name]: event.target.value });
     }
 
     const content: ReactElement = (
@@ -44,9 +56,21 @@ const SignInForm: React.FC = () => {
         </TitleWrapper>
     )
 
+    const handleSubmit = () => {
+        // console.log(formValues);
+        axios.post(USER_SIGN_IN_API, formValues)
+        .then((response) => {
+            console.log(response);
+        })
+        .catch((error) => {
+            setError(error);
+        })
+    }
+
     return (
         <FormWrapper>
             <h1>Sign-In</h1>
+
             <div style={{ marginBottom: 14 }}>
                 <div>
                     <label
@@ -58,13 +82,14 @@ const SignInForm: React.FC = () => {
                 </div>
                 <div>
                     <input
-                        type="email"
                         maxLength={128}
                         id="email"
                         name="email"
                         tabIndex={1}
                         className="form-input"
                         required
+                        value={formValues.emailOrPhone}
+                        onChange={(event) => handleChange(event, 'emailOrPhone')}
                     />
                 </div>
             </div>
@@ -89,6 +114,8 @@ const SignInForm: React.FC = () => {
                         tabIndex={3}
                         className="form-input"
                         required
+                        value={formValues.password}
+                        onChange={(event) => handleChange(event, 'password')}
                     />
                 </div>
             </div>
@@ -100,6 +127,7 @@ const SignInForm: React.FC = () => {
                         className="form-button"
                         type="submit"
                         value="Sign In"
+                        onClick={handleSubmit}
                     />
                 </div>
                 <div className="rememberMe">
@@ -129,6 +157,7 @@ const SignInForm: React.FC = () => {
                     </div>
                 </div>
             </div>
+
             <Divider plain>New to Amazon?</Divider>
             <input
                 type="submit"
