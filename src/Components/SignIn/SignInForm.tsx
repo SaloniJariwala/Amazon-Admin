@@ -14,8 +14,8 @@ const SignInForm: React.FC = () => {
     const [visible, setVisible] = useState<boolean>(false);
     const [error, setError] = useState<Object>(false);
     const [formValues, setFormValues] = useState<ISignInCred>({
-        emailOrPhone: '',
-        password: ''
+        password: '',
+        emailOrPhone: ''
     });
 
     const onForgotPassword = (): void => {
@@ -57,14 +57,16 @@ const SignInForm: React.FC = () => {
     )
 
     const handleSubmit = () => {
-        // console.log(formValues);
         axios.post(USER_SIGN_IN_API, formValues)
-        .then((response) => {
-            console.log(response);
-        })
-        .catch((error) => {
-            setError(error);
-        })
+            .then((response) => {
+                // console.log(response.data);
+                localStorage.setItem('AmazonToken', JSON.stringify(response.data.token));
+                navigate(Routepaths.dashboard);
+            })
+            .catch((error) => {
+                message.error(error.message);
+                setError(error);
+            })
     }
 
     return (

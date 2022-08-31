@@ -47,7 +47,6 @@ const SignUpForm: React.FC = () => {
         const payload = { ...formData, userType, phoneNo: Number(formData.phoneNo) };
         await axios.post(USER_SIGN_UP_API, payload)
             .then((response) => {
-                message.success("User Added Successfully");
                 navigate(Routepaths.signin);
             })
             .catch((error) => {

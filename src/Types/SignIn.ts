@@ -1,4 +1,4 @@
 export interface ISignInCred {
-    emailOrPhone: string;
     password: string;
+    emailOrPhone: string;
 }
