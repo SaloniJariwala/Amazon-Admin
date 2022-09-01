@@ -7,10 +7,13 @@ import { Divider, message, Popover } from "antd";
 import { ISignInCred } from "../../Types/SignIn";
 import axios from "axios";
 import { USER_SIGN_IN_API } from "../../Constants/ApiEndpoints";
+import { useDispatch } from "react-redux";
+import { addLoggedInUser } from "../../ReduxStore/LoggedInUserSlice";
 
 const SignInForm: React.FC = () => {
 
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [visible, setVisible] = useState<boolean>(false);
     const [error, setError] = useState<Object>(false);
     const [formValues, setFormValues] = useState<ISignInCred>({
@@ -59,8 +62,8 @@ const SignInForm: React.FC = () => {
     const handleSubmit = () => {
         axios.post(USER_SIGN_IN_API, formValues)
             .then((response) => {
-                // console.log(response.data);
-                localStorage.setItem('AmazonToken', JSON.stringify(response.data.token));
+                dispatch(addLoggedInUser(response.data));
+                localStorage.setItem('LogInToken', JSON.stringify(response.data.token));
                 navigate(Routepaths.dashboard);
             })
             .catch((error) => {

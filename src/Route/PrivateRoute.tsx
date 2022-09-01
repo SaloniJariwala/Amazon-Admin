@@ -2,7 +2,7 @@ import { Navigate } from "react-router-dom";
 import { IRouteContainerProps } from "../Types/Route";
 
 const PrivateRoute: React.FC<IRouteContainerProps> = ({ Component }) => {
-    const token = localStorage.getItem('AmazonToken');
+    const token = localStorage.getItem('LogInToken');
     if (token) {
         return Component
     } else {

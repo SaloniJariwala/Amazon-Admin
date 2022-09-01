@@ -4,7 +4,7 @@ import Home from "../Pages/Home";
 import { IRouteContainerProps } from "../Types/Route";
 
 const PublicRoute: React.FC<IRouteContainerProps> = ({ Component }) => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('LogInToken');
     if (!token) {
         return Component
     } else {

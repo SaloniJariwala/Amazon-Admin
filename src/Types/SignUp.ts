@@ -18,6 +18,7 @@ export interface IUser extends IFormValues {
     updatedAt?: string;
     __v?: number;
     _id?: string;
+    token?: string;
 }
 
 export interface ICountry {
