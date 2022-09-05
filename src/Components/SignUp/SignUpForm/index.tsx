@@ -2,7 +2,7 @@ import { Divider, message } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { COUNTRY_API, USER_SIGN_UP_API } from "../../../Constants/ApiEndpoints";
+import {API_KEY, COUNTRY_API, USER_SIGN_UP_API} from "../../../Constants/ApiEndpoints";
 import { ICountry, IFormValues } from "../../../Types/SignUp";
 import { AntButton, FormWrapper } from "../style";
 import EmailContainer from "./EmailContainer";
@@ -12,7 +12,8 @@ import PhoneNoContainer from "./PhoneNoContainer";
 import { CaretRightOutlined } from "@ant-design/icons";
 import { Routepaths } from "../../../Route/RoutePaths";
 import { useNavigate } from "react-router-dom";
-import { errorMonitor } from "events";
+
+import bcrypt from "bcryptjs";
 
 const SignUpForm: React.FC = () => {
 
@@ -45,7 +46,9 @@ const SignUpForm: React.FC = () => {
             userType = 'customer';
         }
         const payload = { ...formData, userType, phoneNo: Number(formData.phoneNo) };
-        await axios.post(USER_SIGN_UP_API, payload)
+
+        const token = await bcrypt.hash(API_KEY, 10);
+        await axios.post(`${USER_SIGN_UP_API}?token=${token}`, payload)
             .then((response) => {
                 navigate(Routepaths.signin);
             })
@@ -58,12 +61,12 @@ const SignUpForm: React.FC = () => {
                 }
                 if (error?.response?.data?.code === 11000 && error?.response?.data?.keyValue?.phoneNo) {
                     debugger
-                    setError("phoneNo", { type: 'custom', message: 'Mobile number is alredy in use' });
+                    setError("phoneNo", { type: 'custom', message: 'Mobile number is already in use' });
                 } else {
                     message.error(error.response.data);
                 }
             });
-    }
+    };
 
     return (
         <FormWrapper>
