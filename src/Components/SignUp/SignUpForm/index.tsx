@@ -2,7 +2,7 @@ import { Divider, message } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { COUNTRY_API, USER_POST_API } from "../../../Constants/SignUp";
+import {API_KEY, COUNTRY_API, USER_SIGN_UP_API} from "../../../Constants/ApiEndpoints";
 import { ICountry, IFormValues } from "../../../Types/SignUp";
 import { AntButton, FormWrapper } from "../style";
 import EmailContainer from "./EmailContainer";
@@ -13,11 +13,13 @@ import { CaretRightOutlined } from "@ant-design/icons";
 import { Routepaths } from "../../../Route/RoutePaths";
 import { useNavigate } from "react-router-dom";
 
+import bcrypt from "bcryptjs";
+
 const SignUpForm: React.FC = () => {
 
     const methods = useForm<IFormValues>();
 
-    const { handleSubmit, resetField } = methods;
+    const { handleSubmit, resetField, setError } = methods;
     const navigate = useNavigate();
     const [isLoadingCountries, setIsLoadingCountries] = useState<boolean>(false);
     const [countryData, setCountryData] = useState<ICountry[]>([]);
@@ -36,14 +38,6 @@ const SignUpForm: React.FC = () => {
             });
     }, []);
 
-    const handleReset = () => {
-        resetField("fullname");
-        resetField("countryId");
-        resetField("phoneNo");
-        resetField("email");
-        resetField("password");
-    }
-
     const onSubmit = async (formData: IFormValues) => {
         let userType: string;
         if (window.location.pathname.includes('seller')) {
@@ -52,19 +46,27 @@ const SignUpForm: React.FC = () => {
             userType = 'customer';
         }
         const payload = { ...formData, userType, phoneNo: Number(formData.phoneNo) };
-        debugger
-        await axios.post(USER_POST_API, payload)
+
+        const token = await bcrypt.hash(API_KEY, 10);
+        await axios.post(`${USER_SIGN_UP_API}?token=${token}`, payload)
             .then((response) => {
-                debugger
-                message.success("User Added Successfully");
-                handleReset();
+                navigate(Routepaths.signin);
             })
             .catch((error) => {
-                debugger
-                // console.log("Errorrr...", error);
-                message.error(error.response.data);
+                console.log(error);
+                if (error?.response?.data?.code === 11000 && error?.response?.data?.keyValue?.email) {
+                    setError("email", { type: 'custom', message: 'Email is alredy in use' });
+                } else {
+                    message.error(error.response.data);
+                }
+                if (error?.response?.data?.code === 11000 && error?.response?.data?.keyValue?.phoneNo) {
+                    debugger
+                    setError("phoneNo", { type: 'custom', message: 'Mobile number is already in use' });
+                } else {
+                    message.error(error.response.data);
+                }
             });
-    }
+    };
 
     return (
         <FormWrapper>

@@ -12,6 +12,15 @@ export interface IFormValues {
     password?: string;
 }
 
+export interface IUser extends IFormValues {
+    userType?: string;
+    createdAt?: string;
+    updatedAt?: string;
+    __v?: number;
+    _id?: string;
+    token?: string;
+}
+
 export interface ICountry {
     _id?: number;
     code?: string;

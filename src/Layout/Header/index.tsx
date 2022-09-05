@@ -16,7 +16,7 @@ const Header: React.FC = () => {
     const [isShowSearch, setIsShowSearch] = useState<boolean>(false);
 
     const handleOnClick = () => {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem('LogInToken');
         if (token) {
             navigate(Routepaths.dashboard);
         } else {
