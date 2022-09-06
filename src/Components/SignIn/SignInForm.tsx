@@ -23,11 +23,11 @@ const SignInForm: React.FC = () => {
 
     const onForgotPassword = (): void => {
         navigate(Routepaths.forgotPassword);
-    }
+    };
 
     const hide = () => {
         setVisible(false);
-    }
+    };
 
     const handleVisibleChange = (newVisible: boolean) => {
         setVisible(newVisible);
@@ -35,11 +35,11 @@ const SignInForm: React.FC = () => {
 
     const handleCreateAccount = () => {
         navigate(Routepaths.signup);
-    }
+    };
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>, name: string) => {
         setFormValues({ ...formValues, [name]: event.target.value });
-    }
+    };
 
     const content: ReactElement = (
         <ContentWrapper>
@@ -57,7 +57,7 @@ const SignInForm: React.FC = () => {
             <span>"Keep In Signed In" Checkbox</span>
             <CloseOutlined onClick={hide} style={{ cursor: "pointer" }} />
         </TitleWrapper>
-    )
+    );
 
     const handleSubmit = () => {
         axios.post(USER_SIGN_IN_API, formValues)
@@ -70,7 +70,7 @@ const SignInForm: React.FC = () => {
                 message.error(error.message);
                 setError(error);
             })
-    }
+    };
 
     return (
         <FormWrapper>

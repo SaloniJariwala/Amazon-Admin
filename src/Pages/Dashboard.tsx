@@ -2,7 +2,7 @@ import React from "react";
 import Dashboard from "../Components/Dashboard";
 import SellerHeader from "../Layout/SellerHeader";
 
-const Home: React.FC = () => {
+const DashboardPage: React.FC = () => {
     return (
         <>
             <SellerHeader />
@@ -11,4 +11,4 @@ const Home: React.FC = () => {
     );
 };
 
-export default Home;
+export default DashboardPage;

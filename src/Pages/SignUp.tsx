@@ -1,7 +1,7 @@
 import React from "react";
 import SignUpPage from "../Components/SignUp/index";
 
-const SignIn = () => {
+const SignInPage = () => {
     return (
         <>
             <SignUpPage />
@@ -9,4 +9,4 @@ const SignIn = () => {
     );
 };
 
-export default SignIn;
+export default SignInPage;

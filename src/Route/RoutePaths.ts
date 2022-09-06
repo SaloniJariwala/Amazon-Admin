@@ -4,4 +4,5 @@ export const Routepaths = {
     signin: '/seller/sign-in',
     signup: '/seller/sign-up',
     forgotPassword: '/seller/forgot-password',
+    verification: '/seller/verification'
 };
